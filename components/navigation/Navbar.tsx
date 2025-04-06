@@ -22,7 +22,7 @@ export const Navbar = () => {
               src="/icons/logo.svg"
               alt="Logo"
               width={200}
-              height={100}
+              height={50}
               className="hidden dark:block"
             />
 

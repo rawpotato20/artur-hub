@@ -12,6 +12,16 @@ const nextConfig: NextConfig = {
         hostname: "st3.depositphotos.com",
         port: "",
       },
+      {
+        protocol: "https",
+        hostname: "gratisography.com",
+        port: "",
+      },
+      {
+        protocol: "https",
+        hostname: "media.istockphoto.com",
+        port: "",
+      },
     ],
   },
 };
