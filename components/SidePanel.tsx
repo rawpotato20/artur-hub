@@ -36,12 +36,12 @@ const CONTENT = [
 
 export const SidePanel = () => {
   return (
-    <div className="h-screen bg-[#e9e9e9] dark:bg-[#0f1117] sticky top-0 z-50 w-[300px]">
+    <div className="h-screen bg-[#e9e9e9] dark:bg-[#0f1117] fixed left-0 w-[300px] overflow-y-auto z-10">
       <p className="flex mt-5 text-2xl font-bold text-[#ff7000] mx-6">
         Jūsų įrašai:
       </p>
 
-      <div className="mx-6 h-[60%] overflow-y-auto">
+      <div className="mx-6 h-[70%] overflow-y-auto custom-scroll">
         {CONTENT.map((item) => {
           return (
             <div key={item.id} className="my-4">

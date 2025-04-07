@@ -8,7 +8,7 @@ import { User } from "../User";
 export const Navbar = () => {
   return (
     <>
-      <div className="flex justify-between px-6 items-center h-[100px] dark:bg-[#0f1117] bg-[#e9e9e9]">
+      <div className="flex justify-between px-6 items-center h-[100px] sticky top-0 dark:bg-[var(--primary-dark)] bg-[var(--primary-light)] z-20">
         <div className="flex items-center space-x-4">
           <Link href="./">
             <Image
