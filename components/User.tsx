@@ -3,8 +3,7 @@ import React from "react";
 
 const USER = {
   name: "John Doe",
-  image:
-    "https://st3.depositphotos.com/15648834/17930/v/450/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg",
+  image: "https://cdn-icons-png.flaticon.com/512/9203/9203764.png",
   isVerified: true,
 };
 
