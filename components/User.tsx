@@ -18,7 +18,7 @@ export const User = ({ className }: { className?: string }) => {
       <Image src={USER.image} alt="Profile Picture" height={50} width={50} />
 
       <div className="flex items-center space-x-1">
-        <p className="text-[#ff7000]">{USER.name}</p>
+        <p className="text-accent">{USER.name}</p>
         {USER.isVerified && (
           <div>
             <Image

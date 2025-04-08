@@ -1,5 +1,5 @@
 import React from "react";
-import ToggleTheme from "../ToggleTheme";
+import { ModeToggle } from "@/components/theme/mode-toggle";
 import Link from "next/link";
 import Image from "next/image";
 import NavButton from "./NavButton";
@@ -8,7 +8,7 @@ import { User } from "../User";
 export const Navbar = () => {
   return (
     <>
-      <div className="flex justify-between px-6 items-center h-[100px] sticky top-0 dark:bg-[var(--primary-dark)] bg-[var(--primary-light)] z-20">
+      <div className="flex justify-between px-6 items-center h-[100px] sticky top-0 bg-primary z-20">
         <div className="flex items-center space-x-4">
           <Link href="./">
             <Image
@@ -33,7 +33,7 @@ export const Navbar = () => {
         </div>
 
         <div className="flex space-x-4">
-          <ToggleTheme />
+          <ModeToggle />
           <NavButton
             href="./"
             title="Pagrindinis"
