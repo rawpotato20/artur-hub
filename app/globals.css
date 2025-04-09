@@ -94,7 +94,7 @@
   }
 
   .text-gradient {
-    background: linear-gradient(
+    color: linear-gradient(
       129deg,
       #ff7000 30%,
       #e2985e 77%,

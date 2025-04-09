@@ -18,9 +18,11 @@ export const User = ({
 }) => {
   return (
     <div
-      className={`flex space-x-3 text-[20px] origin-top-left scale-[${
-        scale || "1"
-      }] ${className || ""}`}
+      style={{
+        transform: `scale(${scale})`,
+        transformOrigin: "top left",
+      }}
+      className={`flex space-x-3 text-[20px] ${className || ""}`}
     >
       <Image src={USER.image} alt="Profile Picture" height={50} width={50} />
 

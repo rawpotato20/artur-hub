@@ -35,7 +35,7 @@ export const Navbar = () => {
         <div className="flex space-x-4">
           <ModeToggle />
           <NavButton
-            href="./"
+            href="/"
             title="Pagrindinis"
             icon="/icons/home.svg"
             alt="Home"

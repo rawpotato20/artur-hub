@@ -55,9 +55,11 @@ const CONTENT = [
   },
 ];
 
-export const SidePanel = () => {
+export const SidePanel = ({ className }: { className?: string }) => {
   return (
-    <div className="h-screen bg-primary fixed left-0 w-[300px] overflow-y-auto z-10">
+    <div
+      className={`h-screen bg-primary fixed left-0 w-[300px] overflow-y-auto z-10 ${className}`}
+    >
       <p className="flex mt-5 text-2xl font-bold text-[#ff7000] mx-6 pb-2">
         Jūsų įrašai:
       </p>
@@ -81,7 +83,7 @@ export const SidePanel = () => {
       </div>
 
       <div className="text-[#ff7000] mx-6 flex items-center justify-center h-[10%] text-[20px]">
-        <Link href="./">Daugiau įrašų...</Link>
+        <Link href="./user/dashboard">Daugiau įrašų...</Link>
       </div>
       <div className="h-[10%] mx-6">
         <Button

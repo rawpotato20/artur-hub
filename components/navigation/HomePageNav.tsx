@@ -6,10 +6,10 @@ const dynamicPathName = "";
 const active: "newest" | "popular" | "recommended" = "newest";
 const filter: "all" | "photos" | "videos" = "all";
 
-export const HomePageNav = () => {
+export const HomePageNav = ({ className }: { className?: string }) => {
   return (
     <>
-      <div className="flex justify-between w-full mx-7 mt-7">
+      <div className={`flex justify-between w-full mt-7 ${className}`}>
         <div className="space-x-4">
           <Button
             className={`w-[150px] bg-primary text-primary rounded-[20px] ${
