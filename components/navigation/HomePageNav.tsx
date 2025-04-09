@@ -9,30 +9,32 @@ const filter: "all" | "photos" | "videos" = "all";
 export const HomePageNav = () => {
   return (
     <>
-      <div className="space-x-4 flex justify-between w-full mx-7 mt-7">
-        <Button
-          className={`w-[150px] bg-primary text-primary rounded-[20px] ${
-            active === "newest" && "bg-gradient"
-          }`}
-        >
-          <Link href={`${dynamicPathName}/newest`}>Naujausi</Link>
-        </Button>
+      <div className="flex justify-between w-full mx-7 mt-7">
+        <div className="space-x-4">
+          <Button
+            className={`w-[150px] bg-primary text-primary rounded-[20px] ${
+              active === "newest" && "bg-gradient"
+            }`}
+          >
+            <Link href={`${dynamicPathName}/newest`}>Naujausi</Link>
+          </Button>
 
-        <Button
-          className={`w-[175px] bg-primary text-primary rounded-[20px] ${
-            active === "popular" && "bg-gradient"
-          }`}
-        >
-          <Link href={`${dynamicPathName}/popular`}>Populiariausi</Link>
-        </Button>
+          <Button
+            className={`w-[175px] bg-primary text-primary rounded-[20px] ${
+              active === "popular" && "bg-gradient"
+            }`}
+          >
+            <Link href={`${dynamicPathName}/popular`}>Populiariausi</Link>
+          </Button>
 
-        <Button
-          className={`w-[200px] bg-primary text-primary rounded-[20px] ${
-            active === "recommended" && "bg-gradient"
-          }`}
-        >
-          <Link href={`${dynamicPathName}/recommended`}>Rekomenduojami</Link>
-        </Button>
+          <Button
+            className={`w-[200px] bg-primary text-primary rounded-[20px] ${
+              active === "recommended" && "bg-gradient"
+            }`}
+          >
+            <Link href={`${dynamicPathName}/recommended`}>Rekomenduojami</Link>
+          </Button>
+        </div>
 
         <div className="ml-auto">
           <Button className="rounded-[20px] bg-primary text-primary">

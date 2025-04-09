@@ -3,13 +3,13 @@ import TagCard from "./TagCard";
 
 const TAGS = ["artur", "bobinski", "bobinciuk", "artreus"];
 
-const Tags = () => {
+const Tags = ({ tags, className }: { tags?: string[]; className?: string }) => {
   return (
     <>
-      <div className="space-x-4">
-        {TAGS.map((tag) => (
-          <TagCard key={tag} tag={tag} />
-        ))}
+      <div className={`space-x-4 ${className}`}>
+        {tags
+          ? tags.map((tag) => <TagCard key={tag} tag={tag} />)
+          : TAGS.map((tag) => <TagCard key={tag} tag={tag} />)}
       </div>
     </>
   );

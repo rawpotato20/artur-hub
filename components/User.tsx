@@ -7,17 +7,25 @@ const USER = {
   isVerified: true,
 };
 
-export const User = ({ className }: { className?: string }) => {
+export const User = ({
+  className,
+  textColor,
+  scale,
+}: {
+  className?: string;
+  textColor?: string;
+  scale?: string;
+}) => {
   return (
     <div
-      className={`flex justify-center items-center space-x-3 text-[20px] ${
-        className || ""
-      }`}
+      className={`flex space-x-3 text-[20px] origin-top-left scale-[${
+        scale || "1"
+      }] ${className || ""}`}
     >
       <Image src={USER.image} alt="Profile Picture" height={50} width={50} />
 
       <div className="flex items-center space-x-1">
-        <p className="text-accent">{USER.name}</p>
+        <p className={textColor ? textColor : `text-accent`}>{USER.name}</p>
         {USER.isVerified && (
           <div>
             <Image
