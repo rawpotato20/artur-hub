@@ -36,7 +36,7 @@ const page = () => {
           </div>
         </div>
 
-        <User />
+        <User className="mb-2" textColor="text-primary" />
 
         <div className="bg-primary text-primary p-3 pb-10 rounded-[20px] ">
           Įveskite aprašymą čia...

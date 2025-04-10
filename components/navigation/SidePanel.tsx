@@ -90,7 +90,7 @@ export const SidePanel = ({ className }: { className?: string }) => {
           className="flex items-center text-primary bg-gradient justify-center h-[55px] font-bold text-2xl rounded-[20px]"
           asChild
         >
-          <Link href="./">KURTI</Link>
+          <Link href="/user/create">KURTI</Link>
         </Button>
       </div>
     </div>

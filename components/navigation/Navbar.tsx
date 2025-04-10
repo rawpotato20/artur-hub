@@ -42,7 +42,7 @@ export const Navbar = () => {
           />
 
           <NavButton
-            href="./"
+            href="/sign-in"
             title="Atsijungti"
             icon="/icons/logout.svg"
             alt="Log Out"
