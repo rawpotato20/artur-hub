@@ -60,6 +60,10 @@
     text-[var(--primary-dark)] dark:text-[var(--primary-light)] !important;
   }
 
+  .bg-upload {
+    @apply bg-[url('/other/upload_bg_light.svg')] dark:bg-[url('/other/upload_bg_dark.svg')];
+  }
+
   .bg {
     @apply bg-[var(--bg-light)] dark:bg-[var(--bg-dark)];
   }

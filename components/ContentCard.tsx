@@ -99,7 +99,11 @@ const ContentCard = ({ isUser }: { isUser?: boolean }) => {
                   tags={["arturka", "arturec", "DJPIska"]}
                 />
 
-                <Button className="mt-[7px] rounded-[20px]">Redaguoti</Button>
+                <Link href={`/user/dashboard/${content.id}/edit`}>
+                  <Button className="mt-[7px] rounded-[20px] w-full">
+                    Redaguoti
+                  </Button>
+                </Link>
               </div>
             ))
           : CONTENT_ALL.map((content) => (
