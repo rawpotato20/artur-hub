@@ -60,6 +60,14 @@
     text-[var(--primary-dark)] dark:text-[var(--primary-light)] !important;
   }
 
+  .bg {
+    @apply bg-[var(--bg-light)] dark:bg-[var(--bg-dark)];
+  }
+
+  .text {
+    @apply text-[var(--bg-light)] dark:text-[var(--bg-dark)];
+  }
+
   .bg-primary {
     @apply bg-[var(--primary-light)] dark:bg-[var(--primary-dark)] !important;
   }

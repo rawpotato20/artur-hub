@@ -3,6 +3,7 @@ import React from "react";
 import { User } from "./User";
 import Tags from "./Tags";
 import { Button } from "./ui/button";
+import Link from "next/link";
 
 const CONTENT_ALL = [
   {
@@ -78,13 +79,15 @@ const ContentCard = ({ isUser }: { isUser?: boolean }) => {
           ? CONTENT_USER.map((content) => (
               <div key={content.id} className="flex flex-col mb-10 mr-10">
                 <div className={` h-[264px] w-[469px] relative`}>
-                  <Image
-                    className="rounded-[10px]"
-                    alt="content"
-                    src={content.src}
-                    fill={true}
-                    style={{ objectFit: "cover" }}
-                  />
+                  <Link href={`/user/content/${content.id}`}>
+                    <Image
+                      className="rounded-[10px]"
+                      alt="content"
+                      src={content.src}
+                      fill={true}
+                      style={{ objectFit: "cover" }}
+                    />
+                  </Link>
                 </div>
 
                 <div className={`w-[469px] line-clamp-2 mt-[7px] `}>
@@ -102,13 +105,15 @@ const ContentCard = ({ isUser }: { isUser?: boolean }) => {
           : CONTENT_ALL.map((content) => (
               <div key={content.id} className="flex flex-col mb-10 mr-10">
                 <div className={` h-[264px] w-[469px] relative`}>
-                  <Image
-                    className="rounded-[10px]"
-                    alt="content"
-                    src={content.src}
-                    fill={true}
-                    style={{ objectFit: "cover" }}
-                  />
+                  <Link href={`/user/content/${content.id}`}>
+                    <Image
+                      className="rounded-[10px]"
+                      alt="content"
+                      src={content.src}
+                      fill={true}
+                      style={{ objectFit: "cover" }}
+                    />
+                  </Link>
                 </div>
 
                 <User
