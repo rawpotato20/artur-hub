@@ -73,7 +73,7 @@ const page = () => {
         <p className="mt-1">(Galite pridėti iki 5 hashtag'ų)</p>
 
         <Button className="w-full bg-gradient text-white dark:text-black rounded-[20px] mt-5 text-1xl font-bold">
-          ĮKELTI/REDAGUOTI
+          ĮKELTI
         </Button>
       </div>
     </>

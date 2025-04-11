@@ -8,21 +8,21 @@ import { User } from "../User";
 export const Navbar = () => {
   return (
     <>
-      <div className="flex justify-between px-6 items-center h-[100px] sticky top-0 bg-primary z-20">
+      <div className="flex justify-between px-6 items-center h-[70px] sticky top-0 bg-primary z-20">
         <div className="flex items-center space-x-4">
           <Link href="./">
             <Image
               src="/icons/logo-darkmode.svg"
               alt="Logo"
-              width={200}
-              height={100}
+              width={150}
+              height={70}
               className="block dark:hidden"
             />
             <Image
               src="/icons/logo.svg"
               alt="Logo"
-              width={200}
-              height={50}
+              width={150}
+              height={70}
               className="hidden dark:block"
             />
 

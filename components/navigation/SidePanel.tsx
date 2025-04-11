@@ -68,7 +68,7 @@ export const SidePanel = ({ className }: { className?: string }) => {
         {CONTENT.map((item) => {
           return (
             <div key={item.id} className="my-4">
-              <Link href={`./${item.user}/${item.id}`}>
+              <Link href={`/user/content/${item.id}`}>
                 <Image
                   src={item.content}
                   alt={`Image ${item.id}`}
