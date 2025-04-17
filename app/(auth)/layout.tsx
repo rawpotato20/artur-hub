@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import "@/app/(root)/globals.css";
+import "@/app/globals.css";
 import { ThemeProvider } from "@/components/theme/theme-provider";
 
 export const metadata: Metadata = {
@@ -21,7 +21,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="relative w-full h-[100vh] overflow-hidden">
+          <div className="relative w-full overflow-hidden">
             {/* Background video */}
             <video
               className="absolute inset-0 w-full h-full object-cover"
