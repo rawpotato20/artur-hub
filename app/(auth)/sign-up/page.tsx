@@ -20,14 +20,17 @@ import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
+import { uploadToCloudinary } from "@/lib/utils";
 
 const SignUp = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isPasswordVisibleR, setIsPasswordVisibleR] = useState(false);
 
-  const [profilePhoto, setProfilePhoto] = useState<File | null>(null);
+  const [isLoading, setIsLoading] = useState<Boolean>(false);
+
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string>(
-    "/other/default_profile_icon.png"
+    "/other/default-profile-icon.png"
   );
 
   const form = useForm<z.infer<typeof signUpSchema>>({
@@ -40,10 +43,25 @@ const SignUp = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof signUpSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+  function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+
+    if (file) {
+      const url = URL.createObjectURL(file);
+      setPreviewUrl(url);
+      setSelectedFile(file);
+    }
+  }
+
+  async function onSubmit(values: z.infer<typeof signUpSchema>) {
+    setIsLoading(true);
+
+    if (previewUrl != "/other/default-profile-icon.png" && selectedFile) {
+      const uploadedUrl = await uploadToCloudinary(selectedFile);
+      setPreviewUrl(uploadedUrl);
+    }
+
+    setIsLoading(false);
   }
 
   return (
@@ -83,15 +101,16 @@ const SignUp = () => {
                   Pasirinkite profilio nuotrauką (nebūtina):
                 </p>
 
-                <Image
-                  src={previewUrl}
-                  width={250}
-                  height={250}
-                  alt="profile photo"
-                  className="rounded-[20px] mb-5"
-                />
+                <div className="relative w-[261px] h-[261px] rounded-[20px] mb-5 overflow-hidden">
+                  <Image
+                    src={previewUrl}
+                    fill
+                    alt="profile photo"
+                    className="object-cover"
+                  />
+                </div>
 
-                <Input type="file" />
+                <Input type="file" onChange={handleFileChange} />
               </div>
             </div>
 
@@ -211,15 +230,16 @@ const SignUp = () => {
                     Pasirinkite profilio nuotrauką (nebūtina):
                   </p>
 
-                  <Image
-                    src={previewUrl}
-                    width={250}
-                    height={250}
-                    alt="profile photo"
-                    className="rounded-[20px] mb-5"
-                  />
+                  <div className="relative w-[261px] h-[261px] rounded-[20px] mb-5 overflow-hidden">
+                    <Image
+                      src={previewUrl}
+                      fill
+                      alt="profile photo"
+                      className="object-cover"
+                    />
+                  </div>
 
-                  <Input type="file" />
+                  <Input type="file" onChange={handleFileChange} />
                 </div>
 
                 <Button
@@ -243,14 +263,26 @@ const SignUp = () => {
               </form>
             </Form>
           </div>
-          <p className=" flex justify-center flex-wrap text-[20px] mt-5 md:text-[15px]">
-            Turite paskyrą?{" "}
-            <span>
-              <Link href="/sign-in" className="text-accent font-bold ml-1">
-                Prisijunkite
-              </Link>
-            </span>
-          </p>
+
+          {isLoading ? (
+            <div>
+              <p className=" flex justify-center flex-wrap text-[20px] mt-5 md:text-[15px]">
+                Prašome palaukti,{" "}
+                <span className="text-accent font-bold ml-1">Kraunama...</span>
+              </p>
+            </div>
+          ) : (
+            <div>
+              <p className=" flex justify-center flex-wrap text-[20px] mt-5 md:text-[15px]">
+                Turite paskyrą?{" "}
+                <span>
+                  <Link href="/sign-in" className="text-accent font-bold ml-1">
+                    Prisijunkite
+                  </Link>
+                </span>
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </>

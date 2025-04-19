@@ -27,6 +27,11 @@ const nextConfig: NextConfig = {
         hostname: "cdn-icons-png.flaticon.com",
         port: "",
       },
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+        port: "",
+      },
     ],
   },
 };
