@@ -19,10 +19,13 @@ import {
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { SetStateAction, useState } from "react";
 import { uploadToCloudinary } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 const SignUp = () => {
+  let uploadedUrl: SetStateAction<string>;
+
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isPasswordVisibleR, setIsPasswordVisibleR] = useState(false);
 
@@ -32,6 +35,8 @@ const SignUp = () => {
   const [previewUrl, setPreviewUrl] = useState<string>(
     "/other/default-profile-icon.png"
   );
+
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
@@ -57,11 +62,30 @@ const SignUp = () => {
     setIsLoading(true);
 
     if (previewUrl != "/other/default-profile-icon.png" && selectedFile) {
-      const uploadedUrl = await uploadToCloudinary(selectedFile);
+      uploadedUrl = await uploadToCloudinary(selectedFile);
       setPreviewUrl(uploadedUrl);
     }
 
-    setIsLoading(false);
+    console.log(values);
+    console.log(previewUrl);
+
+    const res = await fetch("/api/registerRoute", {
+      method: "POST",
+      body: JSON.stringify({
+        image: uploadedUrl || previewUrl,
+        email: values.email,
+        username: values.username,
+        password: values.password,
+        name: values.username,
+      }),
+      headers: { "Content-Type": "application/json" },
+    });
+
+    if (res) {
+      router.push("/sign-in");
+    } else {
+      alert("Registration failed");
+    }
   }
 
   return (
