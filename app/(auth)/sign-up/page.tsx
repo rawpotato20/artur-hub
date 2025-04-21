@@ -22,6 +22,7 @@ import Image from "next/image";
 import { SetStateAction, useState } from "react";
 import { uploadToCloudinary } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import { registerUser } from "@/lib/actions/user.actions";
 
 const SignUp = () => {
   let uploadedUrl: SetStateAction<string>;
@@ -69,23 +70,21 @@ const SignUp = () => {
     console.log(values);
     console.log(previewUrl);
 
-    const res = await fetch("/api/registerRoute", {
-      method: "POST",
-      body: JSON.stringify({
-        image: uploadedUrl || previewUrl,
-        email: values.email,
-        username: values.username,
-        password: values.password,
-        name: values.username,
-      }),
-      headers: { "Content-Type": "application/json" },
+    const res = await registerUser({
+      email: values.email,
+      password: values.password,
+      username: values.username,
+      image: previewUrl,
+      provider: "Credentials",
     });
 
-    if (res) {
+    if (res.success) {
       router.push("/sign-in");
     } else {
-      alert("Registration failed");
+      alert("Registration failed, user already exists.");
     }
+
+    setIsLoading(false);
   }
 
   return (

@@ -20,6 +20,7 @@ const userSchema = new mongoose.Schema({
   ],
   signedIn: { type: Boolean, default: false, required: true },
   comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
+  provider: { type: String, enum: ["Credentials", "Google"], required: true },
 });
 
 const User = mongoose.models.User || mongoose.model("User", userSchema);

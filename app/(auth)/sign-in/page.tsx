@@ -20,9 +20,14 @@ import {
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const SignIn = () => {
+  const router = useRouter();
+
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
+  const [isLoading, setIsLoading] = useState<Boolean>(false);
 
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
@@ -32,12 +37,37 @@ const SignIn = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof signInSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-  }
+  async function onSubmit(values: z.infer<typeof signInSchema>) {
+    setIsLoading(true);
 
+    const { email, password } = values;
+
+    try {
+      const res = await fetch("api/signInUser", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+      console.log(data);
+
+      sessionStorage.setItem("refreshToken", data.refreshToken);
+
+      if (res.ok) {
+        console.log("Sign-in successful", data);
+        router.push("/");
+      } else {
+        setIsLoading(false);
+        console.error("Sign-in failed", data.message);
+        alert(data.message);
+      }
+    } catch (error) {
+      setIsLoading(false);
+      console.error("Error during sign-in", error);
+      alert("An error occurred during sign-in. Please try again.");
+    }
+  }
   return (
     <>
       <div className="min-h-screen flex flex-col justify-center items-center">
@@ -135,14 +165,22 @@ const SignIn = () => {
               </form>
             </Form>
           </div>
-          <p className=" flex justify-center flex-wrap text-[20px] mt-5 md:text-[15px]">
-            Neturite paskyros?{" "}
-            <span>
-              <Link href="/sign-up" className="text-accent font-bold ml-1">
-                Registruokitės
-              </Link>
-            </span>
-          </p>
+
+          {isLoading ? (
+            <p className=" flex justify-center flex-wrap text-[20px] mt-5 md:text-[15px]">
+              Prašome palaukti,{" "}
+              <span className="text-accent font-bold ml-1">Kraunama...</span>
+            </p>
+          ) : (
+            <p className=" flex justify-center flex-wrap text-[20px] mt-5 md:text-[15px]">
+              Neturite paskyros?{" "}
+              <span>
+                <Link href="/sign-up" className="text-accent font-bold ml-1">
+                  Registruokitės
+                </Link>
+              </span>
+            </p>
+          )}
         </div>
       </div>
     </>
