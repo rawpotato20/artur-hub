@@ -1,12 +1,74 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { User } from "@/components/User";
+import { NavUser } from "@/components/NavUser";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { data, Router } from "react-router-dom";
+import { useRouter } from "next/navigation";
+
+type UserType = {
+  personName: string;
+  image: string;
+};
+
+const DATA = {
+  url: "/public/other/main.mp4",
+  title: "Pavadinimas",
+  tags: ["tag1", "tag2"],
+  content: "/public/other/main.mp4",
+  contentType: "Video",
+  userId: "68076bca2e953243505d8019",
+};
 
 const page = () => {
-  const [tags, setTags] = React.useState<string[]>(["artur"]);
+  const router = useRouter();
+
+  const [tags, setTags] = useState<string[]>(["artur"]);
+
+  const [user, setUser] = useState<UserType | null>(null);
+
+  async function handleUpload() {
+    const res = await fetch("/api/uploadContent", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(DATA),
+    });
+
+    if (res.ok) {
+      console.log("Upload successful");
+      router.push("/");
+    } else {
+      console.error("Failed to upload");
+    }
+  }
+
+  useEffect(() => {
+    async function fetchUser() {
+      try {
+        const res = await fetch("/api/getUser", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          setUser(data);
+        } else {
+          console.error("Failed to fetch user data:", data.message);
+        }
+      } catch (error) {
+        console.error("Error fetching user:", error);
+      }
+    }
+
+    fetchUser();
+  }, []);
 
   function handleDelete(tag: string) {
     setTags((prevTags) => prevTags.filter((currentTag) => currentTag !== tag));
@@ -36,7 +98,13 @@ const page = () => {
           </div>
         </div>
 
-        <User className="mb-2" textColor="text-primary" />
+        {user && (
+          <NavUser
+            className="mb-2"
+            textColor="text-primary"
+            USER={{ name: user.personName, image: user.image }}
+          />
+        )}
 
         <div className="bg-primary text-primary p-3 pb-10 rounded-[20px] ">
           Įveskite aprašymą čia...
@@ -72,7 +140,10 @@ const page = () => {
         </div>
         <p className="mt-1">(Galite pridėti iki 5 hashtag'ų)</p>
 
-        <Button className="w-full bg-gradient text-white dark:text-black rounded-[20px] mt-5 text-1xl font-bold">
+        <Button
+          onClick={handleUpload}
+          className="w-full bg-gradient text-white dark:text-black rounded-[20px] mt-5 text-1xl font-bold"
+        >
           ĮKELTI
         </Button>
       </div>

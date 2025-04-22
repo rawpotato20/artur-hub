@@ -1,5 +1,5 @@
 import React from "react";
-import { User } from "./User";
+import { User } from "./NavUser";
 import Image from "next/image";
 
 interface Comment {

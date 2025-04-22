@@ -14,7 +14,12 @@ export function refreshToken(payload: object) {
 export function verifyToken(token: string) {
   try {
     return jwt.verify(token, JWT_SECRET);
-  } catch (err) {
+  } catch (err: any) {
+    if (err.name === "TokenExpiredError") {
+      console.error("Token expired:", err);
+    } else {
+      console.error("Invalid token:", err);
+    }
     return null;
   }
 }
@@ -22,7 +27,12 @@ export function verifyToken(token: string) {
 export function verifyRefreshToken(token: string) {
   try {
     return jwt.verify(token, JWT_REFRESH_SECRET);
-  } catch (err) {
+  } catch (err: any) {
+    if (err.name === "TokenExpiredError") {
+      console.error("Token expired:", err);
+    } else {
+      console.error("Invalid token:", err);
+    }
     return null;
   }
 }

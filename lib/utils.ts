@@ -27,3 +27,18 @@ export async function uploadToCloudinary(file: File) {
   console.log(uploadData.secure_url);
   return uploadData.secure_url;
 }
+
+export async function getRefreshToken() {
+  const res = await fetch("/api/refreshToken", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to refresh token");
+  }
+
+  console.log("Refresh token success");
+}

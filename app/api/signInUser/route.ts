@@ -53,6 +53,17 @@ export async function POST(req: Request) {
         path: "/",
       });
 
+      const updatedUser = await User.findOneAndUpdate(
+        { email },
+        { provider: "Credentials" },
+        { new: true }
+      );
+      if (!updatedUser) {
+        return new Response(JSON.stringify({ message: "User not found" }), {
+          status: 404,
+        });
+      }
+
       const headers = new Headers();
       headers.append("Set-Cookie", cookie);
       headers.append("Set-Cookie", refreshCookie);

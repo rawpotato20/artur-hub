@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React from "react";
-import { User } from "./User";
+import { User } from "./NavUser";
 
 const WriteCommentCard = ({ className }: { className?: string }) => {
   return (

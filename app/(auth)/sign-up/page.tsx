@@ -67,24 +67,28 @@ const SignUp = () => {
       setPreviewUrl(uploadedUrl);
     }
 
-    console.log(values);
-    console.log(previewUrl);
-
-    const res = await registerUser({
-      email: values.email,
-      password: values.password,
-      username: values.username,
-      image: previewUrl,
-      provider: "Credentials",
+    const res = await fetch("/api/signUpUser", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: values.email,
+        password: values.password,
+        username: values.username,
+        image: uploadedUrl || previewUrl,
+        provider: "Credentials",
+      }),
     });
 
-    if (res.success) {
+    const data = await res.json();
+
+    if (data.success) {
       router.push("/sign-in");
     } else {
+      setIsLoading(false);
       alert("Registration failed, user already exists.");
     }
-
-    setIsLoading(false);
   }
 
   return (

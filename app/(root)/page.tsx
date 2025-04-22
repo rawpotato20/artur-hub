@@ -40,8 +40,12 @@ export default function Home() {
         <HomePageNav className="mx-7" />
       </div>
 
-      <div className={`flex my-3 ${signedOut ? "ml-[75px]" : "ml-[325px]"}`}>
-        <Tags />
+      <div
+        className={`flex my-3 max-xl:overflow-x-auto ${
+          signedOut ? "ml-[75px]" : "ml-[325px]"
+        }`}
+      >
+        <Tags className="max-xl:whitespace-nowrap" />
       </div>
 
       <div
