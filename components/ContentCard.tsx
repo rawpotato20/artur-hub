@@ -23,7 +23,7 @@ const ContentCard = ({
       <div>
         {isUser ? (
           <div className="flex flex-col mb-10">
-            <div className={` h-[277px] w-[492px] relative`}>
+            <div className="relative aspect-video">
               <Link href={`/user/content/${CONTENT.id}`}>
                 <Image
                   className="rounded-[10px]"
@@ -35,11 +35,11 @@ const ContentCard = ({
               </Link>
             </div>
 
-            <div className={`w-[492px] line-clamp-2 mt-[7px] `}>
+            <div className={`line-clamp-2 mt-[7px] `}>
               <p className="primary-white">{CONTENT.description}</p>
             </div>
 
-            <div className="w-[492px] overflow-x-auto mt-2">
+            <div className=" overflow-x-auto mt-2">
               <Tags
                 className={`flex space-x-2 whitespace-nowrap`}
                 tags={["arturka", "arturec", "DJPIska"]}
@@ -54,7 +54,7 @@ const ContentCard = ({
           </div>
         ) : (
           <div className="flex flex-col mb-10">
-            <div className={` h-[277px] w-[492px] relative`}>
+            <div className={`relative aspect-video`}>
               <Link href={`/user/content/${CONTENT.id}`}>
                 <Image
                   className="rounded-[10px]"
@@ -72,12 +72,12 @@ const ContentCard = ({
               className="mt-[7px]"
             />
 
-            <div className={`w-[492px] line-clamp-2 mt-[-7px] `}>
+            <div className={`line-clamp-2 mt-[-7px] `}>
               <p className="primary-white">{CONTENT.description}</p>
             </div>
 
             <Tags
-              className={`w-[492px] overflow-hidden max-h-[36px] mt-2`}
+              className={`overflow-hidden mt-2`}
               tags={["arturka", "arturec", "DJPIska"]}
             />
           </div>

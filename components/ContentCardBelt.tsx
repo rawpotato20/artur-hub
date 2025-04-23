@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React from "react";
 import { Button } from "./ui/button";
-import { User } from "./NavUser";
+import { NavUser } from "./NavUser";
 
 interface Content {
   id: number;
@@ -25,7 +25,7 @@ const ContentCardBelt = ({
       <div className={`w-full ${className}`}>
         <div className="flex justify-center mx-auto">
           <div className="flex justify-between space-x-20 w-full">
-            <User textColor="text-primary" />
+            {/* <NavUser textColor="text-primary" /> */}
 
             <div className="flex space-x-6">
               <div className="flex items-center font-bold">

@@ -1,5 +1,5 @@
 import React from "react";
-import { User } from "./NavUser";
+import { NavUser } from "./NavUser";
 import Image from "next/image";
 
 interface Comment {
@@ -24,7 +24,7 @@ const CommentCard = ({
         className={`p-4 pr-0 bg-primary rounded-[20px] flex justify-between ${className}`}
       >
         <div className="flex-1">
-          <User textColor="text-primary" className="-mt-6 -ml-6" />
+          {/* <NavUser textColor="text-primary" className="-mt-6 -ml-6" /> */}
           <p className="text-primary ml-9">{comment.comment}</p>
         </div>
 

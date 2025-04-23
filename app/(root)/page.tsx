@@ -35,26 +35,30 @@ const CONTENT = [
 export default function Home() {
   return (
     <>
-      <div className={`flex ${signedOut ? "ml-[50px]" : "ml-[300px]"}`}>
-        <SidePanel className={signedOut ? "hidden" : ""} />
+      <div
+        className={`flex ${
+          signedOut ? "ml-[50px] max-md:ml-0" : "ml-[300px] max-md:ml-0"
+        }`}
+      >
+        <SidePanel className={`{signedOut ? "hidden" : ""} max-md:hidden`} />
         <HomePageNav className="mx-7" />
       </div>
 
       <div
         className={`flex my-3 max-xl:overflow-x-auto ${
-          signedOut ? "ml-[75px]" : "ml-[325px]"
+          signedOut ? "ml-[75px]" : "ml-[325px] max-md:mx-7"
         }`}
       >
-        <Tags className="max-xl:whitespace-nowrap" />
+        <Tags className="max-h-[95px] overflow-y-hidden" />
       </div>
 
       <div
-        className={`flex flex-wrap mt-10 gap-x-6 ${
-          signedOut ? "ml-[75px]" : "ml-[325px]"
+        className={`grid grid-cols-3 max-xl:grid-cols-2 max-lg:grid-cols-1 gap-6 auto-rows-auto mt-10 mr-7 ${
+          signedOut ? "ml-[75px] max-md:mx-7" : "ml-[325px] max-md:mx-7"
         }`}
       >
         {CONTENT.map((content) => (
-          <div key={content.id} className="w-[492px]">
+          <div key={content.id}>
             <ContentCard CONTENT={content} />
           </div>
         ))}

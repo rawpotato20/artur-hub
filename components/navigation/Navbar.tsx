@@ -19,6 +19,10 @@ export const Navbar = () => {
   const [user, setUser] = useState<UserType | null>(null);
   const [refreshResult, setRefreshResult] = useState<any>(null);
 
+  const [path, setPath] = useState<string>("");
+
+  const [isOpen, setIsOpen] = useState<Boolean>(false);
+
   async function fetchUser() {
     try {
       const res = await fetch("/api/getUser", {
@@ -66,7 +70,7 @@ export const Navbar = () => {
     <>
       <div className="flex justify-between px-6 items-center h-[70px] sticky top-0 bg-primary z-20">
         <div className="flex items-center space-x-4">
-          <Link href="./">
+          <Link href="/">
             <Image
               src="/icons/logo-darkmode.svg"
               alt="Logo"
@@ -86,11 +90,14 @@ export const Navbar = () => {
           </Link>
 
           {user && (
-            <NavUser USER={{ name: user.personName, image: user.image }} />
+            <NavUser
+              USER={{ name: user.personName, image: user.image }}
+              className="max-md:hidden"
+            />
           )}
         </div>
 
-        <div className="flex space-x-4">
+        <div className="flex space-x-4 max-md:hidden">
           <ModeToggle />
           <Button asChild>
             <Link href="/" className="flex justify-center items-center ">
@@ -120,7 +127,7 @@ export const Navbar = () => {
                   <span>
                     <Image
                       className="ml-2"
-                      src="/icons/login.svg"
+                      src="/icons/logout.svg"
                       alt="Login"
                       width={24}
                       height={24}
@@ -149,6 +156,117 @@ export const Navbar = () => {
                 </p>
               </Link>
             </Button>
+          )}
+        </div>
+
+        <div className="md:hidden">
+          <Button className="text-3xl" onClick={() => setIsOpen(!isOpen)}>
+            ☰
+          </Button>
+
+          {/* Sidebar */}
+          {isOpen && (
+            <div
+              className={`fixed top-[70px] left-0 w-64 h-[calc(100vh-70px)] bg-primary shadow-lg z-10 animate-slideIn flex justify-between`}
+            >
+              <div className="flex flex-col my-10 justify-between w-full">
+                <div className="space-y-5 flex justify-center flex-col">
+                  <Button asChild>
+                    <Link href="/" className="flex bg-secondary p-2 mx-5">
+                      <p className="flex items-center space-x-5 text-xl ">
+                        Pagrindinis
+                        <span>
+                          <Image
+                            className="ml-2"
+                            src="/icons/home.svg"
+                            alt="Homepage"
+                            width={24}
+                            height={24}
+                          />
+                        </span>
+                      </p>
+                    </Link>
+                  </Button>
+
+                  {isLoggedIn ? (
+                    <>
+                      <Button asChild>
+                        <Link href="/" className="flex p-2 mx-5">
+                          <p className="flex items-center space-x-5 text-xl">
+                            Mano vaizdo įrašai
+                          </p>
+                        </Link>
+                      </Button>
+
+                      <Button asChild className="bg-gradient">
+                        <Link href="/user/create" className="flex p-2 mx-5">
+                          <p className="flex items-center space-x-5 text-xl">
+                            KURTI
+                            <span></span>
+                          </p>
+                        </Link>
+                      </Button>
+
+                      <Button asChild>
+                        <Link href="/sign-in" className="flex p-2 mx-5">
+                          <p className="flex items-center space-x-5 text-xl">
+                            Atsijungti
+                            <span>
+                              <Image
+                                className="ml-2"
+                                src="/icons/logout.svg"
+                                alt="Login"
+                                width={24}
+                                height={24}
+                              />
+                            </span>
+                          </p>
+                        </Link>
+                      </Button>
+                    </>
+                  ) : (
+                    <Button onClick={logoutUser} asChild>
+                      <Link href="/sign-in" className="flex p-2 mx-5">
+                        <p className="flex items-center space-x-5 text-xl">
+                          Prisijungti
+                          <span>
+                            <Image
+                              className="ml-2"
+                              src="/icons/logout.svg"
+                              alt="Logout"
+                              width={24}
+                              height={24}
+                            />
+                          </span>
+                        </p>
+                      </Link>
+                    </Button>
+                  )}
+                </div>
+
+                <div>
+                  {user && (
+                    <NavUser
+                      USER={{ name: user.personName, image: user.image }}
+                      className="flex justify-center"
+                    />
+                  )}
+
+                  <div className="flex justify-center">
+                    <ModeToggle className="w-[80%] my-5" />
+                  </div>
+
+                  <div className="flex justify-center">
+                    <Button
+                      className="p-4 bg-accent w-[80%]"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Close
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
           )}
         </div>
       </div>

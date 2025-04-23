@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 const USER = {
@@ -25,11 +26,19 @@ export const NavUser = ({ className, textColor, scale, USER }: Props) => {
       }}
       className={`flex space-x-3 text-[20px] ${className || ""}`}
     >
-      <Image src={USER?.image} alt="Profile Picture" height={50} width={50} />
+      <Link href="/user/profile" className="flex">
+        <Image
+          src={USER?.image}
+          alt="Profile Picture"
+          height={50}
+          width={50}
+          className="rounded-full"
+        />
 
-      <div className="flex items-center space-x-1">
-        <p className={textColor ? textColor : `text-accent`}>{USER?.name}</p>
-      </div>
+        <div className="flex items-center space-x-1 ml-3">
+          <p className={textColor ? textColor : `text-accent`}>{USER?.name}</p>
+        </div>
+      </Link>
     </div>
   );
 };

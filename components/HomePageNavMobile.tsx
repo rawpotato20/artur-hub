@@ -22,7 +22,9 @@ const HomePageNavMobile = ({
 
   return (
     <div className={`flex justify-between w-full mt-7 ${className}`}>
-      <Button onClick={() => setOpen(true)}>Filtrai</Button>
+      <Button className="w-full" onClick={() => setOpen(true)}>
+        Filtrai
+      </Button>
 
       {open && (
         <div className="fixed top-0 bg-black bg-opacity-60 left-0 h-full w-full z-[1000] flex justify-center items-center">

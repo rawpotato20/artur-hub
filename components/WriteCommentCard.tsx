@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React from "react";
-import { User } from "./NavUser";
+import { NavUser } from "./NavUser";
 
 const WriteCommentCard = ({ className }: { className?: string }) => {
   return (
@@ -9,7 +9,7 @@ const WriteCommentCard = ({ className }: { className?: string }) => {
         className={`p-4 pr-0 bg-primary rounded-[20px] flex justify-between ${className}`}
       >
         <div className="flex-1">
-          <User textColor="text-primary" className="-mt-6 -ml-6" />
+          {/* <NavUser textColor="text-primary" className="-mt-6 -ml-6" /> */}
           <div className="bg rounded-[20px] p-3 mr-9 ml-9">
             Palikite komentarą...
           </div>
