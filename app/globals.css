@@ -22,6 +22,35 @@
   font-display: swap;
 }
 
+/* ------------------------------------------------------------------------------- */
+
+textarea::-webkit-scrollbar {
+  width: 10px;
+}
+
+textarea::-webkit-scrollbar-thumb {
+  background-color: #ff7000; /* Customize the color */
+}
+
+textarea::-webkit-scrollbar-track {
+  background: transparent; /* Track color */
+}
+
+textarea {
+  -webkit-mask-image: -webkit-radial-gradient(
+    circle,
+    rgba(255, 255, 255, 1) 50%,
+    rgba(0, 0, 0, 1) 100%
+  );
+  mask-image: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 1) 50%,
+    rgba(0, 0, 0, 1) 100%
+  );
+}
+
+/* ------------------------------------------------------------------------------- */
+
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -38,6 +67,8 @@
 ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(129deg, #ff7000 30%, #e2985e 77%, #e2995f 100%);
 }
+
+/* ------------------------------------------------------------------------------- */
 
 .custom-scroll::-webkit-scrollbar {
   width: 8px;
@@ -58,6 +89,8 @@
   border-radius: 4px;
   margin-left: auto;
 }
+
+/* ------------------------------------------------------------------------------- */
 
 :root {
   --bg-light: #ffffff;

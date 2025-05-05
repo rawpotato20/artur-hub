@@ -4,13 +4,10 @@ import { Button } from "./ui/button";
 import { NavUser } from "./NavUser";
 
 interface Content {
-  id: number;
-  isVideo: boolean;
-  description: string;
   views: number;
   likes: number;
   dislikes: number;
-  user: { name: string; image: string; isVerified: boolean };
+  user: { personName: string; image: string };
 }
 
 const ContentCardBelt = ({
@@ -25,7 +22,7 @@ const ContentCardBelt = ({
       <div className={`w-full ${className}`}>
         <div className="flex justify-center mx-auto">
           <div className="flex justify-between space-x-20 w-full">
-            {/* <NavUser textColor="text-primary" /> */}
+            <NavUser textColor="text-primary" USER={CONTENT.user} />
 
             <div className="flex space-x-6">
               <div className="flex items-center font-bold">

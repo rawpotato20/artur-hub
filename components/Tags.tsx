@@ -1,5 +1,5 @@
 import React from "react";
-import TagCard from "./TagCard";
+import TagCard from "@/components/cards/TagCard";
 
 const TAGS = [
   "artur",

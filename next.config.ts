@@ -29,7 +29,17 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "res.cloudinary.com",
+        hostname: "arturhub-photos.s3.eu-central-1.amazonaws.com",
+        port: "",
+      },
+      {
+        protocol: "https",
+        hostname: "arturhub-profile-images.s3.eu-central-1.amazonaws.com",
+        port: "",
+      },
+      {
+        protocol: "https",
+        hostname: "arturhub-videos.s3.eu-central-1.amazonaws.com",
         port: "",
       },
     ],

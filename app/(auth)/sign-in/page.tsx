@@ -43,7 +43,7 @@ const SignIn = () => {
     const { email, password } = values;
 
     try {
-      const res = await fetch("api/signInUser", {
+      const res = await fetch("api/user/signInUser", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -52,10 +52,9 @@ const SignIn = () => {
       const data = await res.json();
       console.log(data);
 
-      sessionStorage.setItem("refreshToken", data.refreshToken);
-
       if (res.ok) {
         console.log("Sign-in successful", data);
+
         router.push("/");
       } else {
         setIsLoading(false);

@@ -11,6 +11,7 @@ const userSchema = new mongoose.Schema({
     required: true,
     default: "@/public/other/default_profile_icon.png",
   },
+  imageKey: { type: String },
   bio: { type: String },
   posts: [
     {

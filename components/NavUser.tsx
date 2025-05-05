@@ -12,7 +12,7 @@ interface Props {
   textColor?: string;
   scale?: string;
   USER: {
-    name: string;
+    personName: string;
     image: string;
   };
 }
@@ -26,17 +26,20 @@ export const NavUser = ({ className, textColor, scale, USER }: Props) => {
       }}
       className={`flex space-x-3 text-[20px] ${className || ""}`}
     >
-      <Link href="/user/profile" className="flex">
-        <Image
-          src={USER?.image}
-          alt="Profile Picture"
-          height={50}
-          width={50}
-          className="rounded-full"
-        />
+      <Link href="/" className="flex">
+        <div className="relative w-[50px] h-[50px] rounded-full overflow-hidden">
+          <Image
+            src={USER.image}
+            alt="Profile Picture"
+            fill
+            className="object-cover"
+          />
+        </div>
 
         <div className="flex items-center space-x-1 ml-3">
-          <p className={textColor ? textColor : `text-accent`}>{USER?.name}</p>
+          <p className={textColor ? textColor : `text-accent`}>
+            {USER.personName}
+          </p>
         </div>
       </Link>
     </div>

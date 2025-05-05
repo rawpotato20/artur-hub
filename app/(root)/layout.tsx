@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import "@/app/globals.css";
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import { Navbar } from "@/components/navigation/Navbar";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/navigation/app-sidebar";
 
 export const metadata: Metadata = {
   title: "ArturHub",

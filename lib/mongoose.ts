@@ -1,34 +1,37 @@
-// import mongoose from "mongoose";
-
-// let isConnected = false;
-
-// export const connectToDb = async () => {
-//   mongoose.set("strictQuery", true);
-
-//   if (!process.env.MONGODB_URL) return console.log("MONGODB_URL not found");
-//   if (isConnected) return console.log("Already connected to MongoDB");
-
-//   try {
-//     await mongoose.connect(process.env.MONGODB_URL);
-//     isConnected = true;
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
-
 import mongoose from "mongoose";
 
-let isConnected = false;
+let isConnected = false; // track connection
 
 export const connectToDb = async () => {
-  if (isConnected) return;
-
-  try {
-    await mongoose.connect(process.env.MONGODB_URL!, {});
-
-    isConnected = true;
-    console.log("MongoDB connected");
-  } catch (err) {
-    console.error("MongoDB connection error:", err);
+  if (isConnected) {
+    console.log(
+      "---------------------\nMONGODB already connected\n---------------------"
+    );
+    return;
   }
+
+  if (mongoose.connections.length > 0) {
+    const connection = mongoose.connections[0];
+    if (connection.readyState === 1) {
+      console.log(
+        "---------------------\nUsing Exsisting DB connection...\n---------------------"
+      );
+      isConnected = true;
+      return;
+    }
+    await mongoose.disconnect();
+  }
+
+  const MONGODB_URL = process.env.MONGODB_URL;
+
+  if (!MONGODB_URL) throw new Error("MONGODB_URL not set");
+
+  await mongoose.connect(MONGODB_URL, {
+    dbName: "ArturHub", // optional, depends on you
+  });
+
+  console.log(
+    "---------------------\nMONGODB connected\n---------------------"
+  );
+  isConnected = true;
 };

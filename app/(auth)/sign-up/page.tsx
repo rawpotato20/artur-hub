@@ -20,9 +20,9 @@ import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import Image from "next/image";
 import { SetStateAction, useState } from "react";
-import { uploadToCloudinary } from "@/lib/utils";
+import { signUpUser } from "@/lib/utils/users";
+import { uploadProfileImage } from "@/lib/utils/content";
 import { useRouter } from "next/navigation";
-import { registerUser } from "@/lib/actions/user.actions";
 
 const SignUp = () => {
   let uploadedUrl: SetStateAction<string>;
@@ -62,32 +62,37 @@ const SignUp = () => {
   async function onSubmit(values: z.infer<typeof signUpSchema>) {
     setIsLoading(true);
 
+    const data = {
+      email: values.email,
+      password: values.password,
+      username: values.username,
+      image: previewUrl,
+      provider: "Credentials",
+      key: "",
+    };
+
     if (previewUrl != "/other/default-profile-icon.png" && selectedFile) {
-      uploadedUrl = await uploadToCloudinary(selectedFile);
-      setPreviewUrl(uploadedUrl);
-    }
+      const uploadedUrl = await uploadProfileImage(selectedFile);
+      const url = await uploadedUrl.json();
+      data.image = url.viewUrl;
+      data.key = url.key;
+      const res = await signUpUser(data);
 
-    const res = await fetch("/api/signUpUser", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: values.email,
-        password: values.password,
-        username: values.username,
-        image: uploadedUrl || previewUrl,
-        provider: "Credentials",
-      }),
-    });
-
-    const data = await res.json();
-
-    if (data.success) {
-      router.push("/sign-in");
+      if (res.status == 201) {
+        router.push("/sign-in");
+      } else {
+        setIsLoading(false);
+        alert("Registration failed, user already exists.");
+      }
     } else {
-      setIsLoading(false);
-      alert("Registration failed, user already exists.");
+      const res = await signUpUser(data);
+
+      if (res.status == 201) {
+        router.push("/sign-in");
+      } else {
+        setIsLoading(false);
+        alert("Registration failed, user already exists.");
+      }
     }
   }
 

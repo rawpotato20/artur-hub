@@ -6,7 +6,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { NavUser } from "../NavUser";
 import { Button } from "../ui/button";
-import { getRefreshToken } from "@/lib/utils";
+import { getUser, signOutUser } from "@/lib/utils/users";
+import { getRefreshToken } from "@/lib/utils/tokens";
 
 type UserType = {
   personName: string;
@@ -23,22 +24,25 @@ export const Navbar = () => {
 
   const [isOpen, setIsOpen] = useState<Boolean>(false);
 
-  async function fetchUser() {
+  async function fetchUser(retry = true) {
     try {
-      const res = await fetch("/api/getUser", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const data = await getUser();
 
-      const data = await res.json();
+      console.log("data:", data);
 
-      if (res.ok) {
-        setUser(data);
+      if (data.success) {
+        setUser(data.data);
         setIsLoggedIn(true);
+      } else if ((data.status == 401 || data.status == 403) && retry) {
+        console.warn("Access token might be expired. Trying to refresh...");
+        // Try again once, server will attempt to refresh if possible
+        const result = await getRefreshToken();
+        setRefreshResult(result);
+        if (result) {
+          setIsLoggedIn(true);
+          return fetchUser(false);
+        }
       } else {
-        setRefreshResult(getRefreshToken());
         console.error("Failed to fetch user data:", data.message);
       }
     } catch (error) {
@@ -52,12 +56,7 @@ export const Navbar = () => {
   }, [refreshResult]);
 
   async function logoutUser() {
-    const res = await fetch("/api/signOutUser", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const res = await signOutUser();
 
     if (res.ok) {
       window.location.href = "/sign-in";
@@ -91,7 +90,7 @@ export const Navbar = () => {
 
           {user && (
             <NavUser
-              USER={{ name: user.personName, image: user.image }}
+              USER={{ personName: user.personName, image: user.image }}
               className="max-md:hidden"
             />
           )}
@@ -117,6 +116,24 @@ export const Navbar = () => {
           </Button>
 
           {isLoggedIn ? (
+            <Button
+              onClick={logoutUser}
+              className="flex justify-center items-center"
+            >
+              <p className="flex items-center space-x-5">
+                Atsijungti
+                <span>
+                  <Image
+                    className="ml-2"
+                    src="/icons/logout.svg"
+                    alt="Login"
+                    width={24}
+                    height={24}
+                  />
+                </span>
+              </p>
+            </Button>
+          ) : (
             <Button asChild>
               <Link
                 href="/sign-in"
@@ -124,26 +141,6 @@ export const Navbar = () => {
               >
                 <p className="flex items-center space-x-5">
                   Prisijungti
-                  <span>
-                    <Image
-                      className="ml-2"
-                      src="/icons/logout.svg"
-                      alt="Login"
-                      width={24}
-                      height={24}
-                    />
-                  </span>
-                </p>
-              </Link>
-            </Button>
-          ) : (
-            <Button onClick={logoutUser} asChild>
-              <Link
-                href="/sign-in"
-                className="flex justify-center items-center"
-              >
-                <p className="flex items-center space-x-5">
-                  Atsijungti
                   <span>
                     <Image
                       className="ml-2"
@@ -208,7 +205,11 @@ export const Navbar = () => {
                       </Button>
 
                       <Button asChild>
-                        <Link href="/sign-in" className="flex p-2 mx-5">
+                        <Link
+                          onClick={logoutUser}
+                          href="/sign-in"
+                          className="flex p-2 mx-5"
+                        >
                           <p className="flex items-center space-x-5 text-xl">
                             Atsijungti
                             <span>
@@ -225,7 +226,7 @@ export const Navbar = () => {
                       </Button>
                     </>
                   ) : (
-                    <Button onClick={logoutUser} asChild>
+                    <Button asChild>
                       <Link href="/sign-in" className="flex p-2 mx-5">
                         <p className="flex items-center space-x-5 text-xl">
                           Prisijungti
@@ -247,7 +248,7 @@ export const Navbar = () => {
                 <div>
                   {user && (
                     <NavUser
-                      USER={{ name: user.personName, image: user.image }}
+                      USER={{ personName: user.personName, image: user.image }}
                       className="flex justify-center"
                     />
                   )}
