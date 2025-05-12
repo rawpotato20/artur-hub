@@ -15,3 +15,24 @@ export async function getRefreshToken() {
 
   return true;
 }
+
+//------------------------------------------------------------------------------
+
+export async function getRefreshTokenServer(refreshToken: string) {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/refreshTokenServer`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-refresh-token": refreshToken || "",
+      },
+    }
+  );
+
+  if (!res.ok) {
+    return false;
+  }
+
+  return true;
+}

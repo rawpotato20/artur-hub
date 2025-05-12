@@ -1,52 +1,49 @@
-import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
-import jwt from "jsonwebtoken";
+import { verify, decode } from "jsonwebtoken";
+import { serialize } from "cookie";
 import User from "@/lib/models/user.model";
 import { connectToDb } from "@/lib/mongoose";
 import { refreshToken, signToken } from "@/lib/jwt";
-import { serialize } from "cookie";
 
 export async function POST(req: Request) {
   try {
     await connectToDb();
 
-    const cookieStore = await cookies();
-    const oldRefreshToken = cookieStore.get("refresh_token")?.value;
-
-    console.log("Cookie Store:", cookieStore);
+    // Get refresh token from headers
+    const oldRefreshToken = req.headers.get("x-refresh-token");
 
     if (!oldRefreshToken) {
-      return NextResponse.json(
-        { message: "No refresh token" },
-        { status: 401 }
-      );
+      return new Response(JSON.stringify({ message: "No refresh token" }), {
+        status: 401,
+      });
     }
 
-    // Decode without verifying to get email/id
+    // Decode (not verify) to get user ID/email
     let decoded: any;
     try {
-      decoded = jwt.decode(oldRefreshToken);
+      decoded = decode(oldRefreshToken);
     } catch {
-      return NextResponse.json(
-        { message: "Invalid refresh token" },
-        { status: 403 }
+      return new Response(
+        JSON.stringify({ message: "Invalid refresh token" }),
+        {
+          status: 403,
+        }
       );
     }
 
-    const user = await User.findOne({ id: decoded.id });
+    const user = await User.findOne({ id: decoded?.id });
 
     if (!user) {
-      return NextResponse.json(
-        { message: "User not found or no refresh token stored" },
-        { status: 404 }
-      );
+      return new Response(JSON.stringify({ message: "User not found" }), {
+        status: 404,
+      });
     }
 
-    // If valid, generate a new access token
+    // Generate new tokens
     const newAccessToken = signToken({ id: user.id, email: user.email });
     const newRefreshToken = refreshToken({ id: user.id, email: user.email });
 
-    const activeCookie = serialize("access_token", newAccessToken, {
+    // Serialize new cookies
+    const accessCookie = serialize("access_token", newAccessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
@@ -63,7 +60,7 @@ export async function POST(req: Request) {
     });
 
     const headers = new Headers();
-    headers.append("Set-Cookie", activeCookie);
+    headers.append("Set-Cookie", accessCookie);
     headers.append("Set-Cookie", refreshCookie);
     headers.set("Content-Type", "application/json");
 
@@ -72,9 +69,8 @@ export async function POST(req: Request) {
       headers,
     });
   } catch (error) {
-    return NextResponse.json(
-      { message: "Something went wrong" },
-      { status: 500 }
-    );
+    return new Response(JSON.stringify({ message: "Something went wrong" }), {
+      status: 500,
+    });
   }
 }

@@ -1,7 +1,7 @@
 export async function getUser() {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/user/getUser`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/user/getUserClient`,
       {
         method: "GET",
         headers: {
@@ -30,6 +30,49 @@ export async function getUser() {
   }
 }
 
+//--------------------------------------------------------------------------------------------------------------
+
+interface getUserServerProps {
+  token: string;
+  refreshToken: string;
+}
+
+export async function getUserServer({
+  token,
+  refreshToken,
+}: getUserServerProps) {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/user/getUserServer`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+          "x-refresh-token": refreshToken || "", // optional
+        },
+      }
+    );
+
+    if (!res.ok) {
+      const message = await res.json();
+      return {
+        success: false,
+        status: res.status,
+        message: message.message || "Failed to fetch user data",
+      };
+    }
+
+    const data = await res.json();
+    return { success: true, status: res.status, data };
+  } catch (error: any) {
+    return {
+      success: false,
+      status: 500,
+      message: error.message || "Something went wrong",
+    };
+  }
+}
 //--------------------------------------------------------------------------------------------------------------
 
 export async function verifyUser() {

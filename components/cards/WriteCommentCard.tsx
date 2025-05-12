@@ -3,6 +3,9 @@
 import React, { useState } from "react";
 import { NavUser } from "@/components/NavUser";
 import { postComment } from "@/lib/utils/content";
+import { verifyUser } from "@/lib/utils/users";
+import { refreshToken } from "@/lib/jwt";
+import { getRefreshToken } from "@/lib/utils/tokens";
 
 interface USER {
   personName: string;
@@ -22,9 +25,18 @@ const WriteCommentCard = ({
   const [comment, setComment] = useState<string>("");
 
   async function handlePostComment() {
+    const verify = await verifyUser();
+    const verifyJSON = await verify.json();
+
+    if ((verifyJSON.success = false)) {
+      const refresh = await getRefreshToken();
+      console.log("refreshToken:", refreshToken);
+      if (!refresh) return console.log("No refresh token found");
+    }
+
     const res = await postComment(comment, user._id, key);
     const data = await res.json();
-    console.log(data);
+    console.log("Comment Post Data:", data);
   }
 
   return (

@@ -1,14 +1,12 @@
-"use client";
-
 import CommentCard from "@/components/cards/CommentCard";
 import ContentCardBelt from "@/components/ContentCardBelt";
 import Tags from "@/components/Tags";
 import WriteCommentCard from "@/components/cards/WriteCommentCard";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
 import { getContent } from "@/lib/utils/content";
-import { getUser } from "@/lib/utils/users";
-import { getRefreshToken } from "@/lib/utils/tokens";
+import { cookies } from "next/headers";
+import { getUserServer } from "@/lib/utils/users";
+import { getRefreshTokenServer } from "@/lib/utils/tokens";
 
 interface USER {
   personName: string;
@@ -24,72 +22,41 @@ interface COMMENT {
   _id: string;
 }
 
-const Content = ({ params }: { params: { contentId: string } }) => {
-  const [user, setUser] = useState<string>("");
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  const [refreshResult, setRefreshResult] = useState<any>(false);
-  const [data, setData] = useState<any>(null);
-  const [contentId, setContentId] = useState<string>("");
+const Content = async ({ params }: { params: { contentId: string } }) => {
+  let isLoggedIn = false;
 
-  async function fetchUser(retry = true) {
-    try {
-      const data = await getUser();
+  //Get the specific Post
+  const { contentId } = await params;
+  const res = await getContent(contentId);
+  const data = await res.json();
 
-      console.log("data:", data);
+  //Get Access and Refresh Tokens
+  const cookieStore = await cookies();
+  const token = cookieStore.get("access_token")?.value;
+  const refreshToken = cookieStore.get("refresh_token")?.value;
 
-      if (data.success) {
-        setUser(data.data.username);
-        setIsLoggedIn(true);
-      } else if ((data.status == 401 || data.status == 403) && retry) {
-        console.warn("Access token might be expired. Trying to refresh...");
-        // Try again once, server will attempt to refresh if possible
-        const result = await getRefreshToken();
-        setRefreshResult(result);
-        if (result) {
-          setIsLoggedIn(true);
-          return fetchUser(false);
-        }
-      } else {
-        console.error("Failed to fetch user data:", data.message);
-      }
-    } catch (error) {
-      setIsLoggedIn(false);
-      console.error("Error fetching user:", error);
-    }
+  if (!refreshToken || !token)
+    return console.log("No Refresh or Access Tokens found.");
+
+  //Get User from said Tokens
+  const awaitUser = await getUserServer({
+    token: token,
+    refreshToken: refreshToken,
+  });
+
+  if (awaitUser.status == 403) {
+    console.log("Token expired, trying to refresh...");
+    const refresh = await getRefreshTokenServer(refreshToken);
+    if (!refresh) return console.log("No Refresh Token");
   }
 
-  useEffect(() => {
-    fetchUser();
-  }, [refreshResult]);
+  const user = {
+    personName: awaitUser.data.personName,
+    image: awaitUser.data.image,
+    _id: awaitUser.data._id,
+  };
 
-  useEffect(() => {
-    // Async function inside useEffect
-    const getData = async () => {
-      try {
-        const resolvedParams = await params;
-        const contentIdFromParams = resolvedParams.contentId;
-
-        setContentId(contentIdFromParams);
-
-        const res = await getContent(contentId);
-        const data = await res.json();
-        setData(data); // set the content data state
-        console.log(data);
-      } catch (error) {
-        console.error("Error fetching content:", error);
-      }
-    };
-
-    getData(); // Call the async function to fetch content
-  }, [contentId]);
-
-  if (!data) {
-    return (
-      <h1 className="flex justify-center mt-5 text-xl text-accent">
-        Loading...
-      </h1>
-    );
-  }
+  isLoggedIn = true;
 
   return (
     <>
@@ -140,11 +107,7 @@ const Content = ({ params }: { params: { contentId: string } }) => {
           ))
         )}
         {isLoggedIn && (
-          <WriteCommentCard
-            user={data.post.user}
-            key={data.post.contentId}
-            className="mb-10"
-          />
+          <WriteCommentCard user={user} key={data.post.key} className="mb-10" />
         )}
       </div>
     </>
